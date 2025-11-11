@@ -164,7 +164,7 @@ func (s *RedisStore) GetDashboardStats(ctx context.Context, userID string) (*mod
 		case "completed":
 			stats.CompletedTasks++
 		}
-		if task.Priority = "high" {
+		if task.Priority == "high" {
 			stats.HighPriorityTasks++
 		}
 	}
