@@ -129,5 +129,44 @@ func (s *RedisStore) DeleteTask(ctx context.Context, userID, taskID string) erro
 }
 
 func (s *RedisStore) GetUserTasks(ctx context.Context, userID, status string) ([]*models.Task, error) {
+	taskIDs, err := s.client.ZRevRange(ctx, fmt.Sprintf("user:%s:tasks", userID), 0, -1).Result()
+	if err != nil {
+		return nil, err
+	}
 
+	tasks := make([]*models.Task, 0)
+	for _, id := range taskIDs {
+		task, err := s.GetTask(ctx, id)
+		if err != nil {
+			continue
+		}
+		if status == "" || task.Status == status {
+			tasks = append(tasks, task)
+		}
+	}
+	return tasks, nil
+}
+
+func (s *RedisStore) GetDashboardStats(ctx context.Context, userID string) (*models.DashboardStats, error) {
+	tasks, err := s.GetUserTasks(ctx, userID, "")
+	if err != nil {
+		return nil, err
+	}
+
+	stats := &models.DashboardStats{}
+	for _, task := range tasks {
+		stats.TotalTasks++
+		switch task.Status {
+		case "pending":
+			stats.PendingTasks++
+		case "in_progress":
+			stats.InProgressTasks++
+		case "completed":
+			stats.CompletedTasks++
+		}
+		if task.Priority = "high" {
+			stats.HighPriorityTasks++
+		}
+	}
+	return stats, nil
 }
