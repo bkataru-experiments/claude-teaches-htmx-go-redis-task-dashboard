@@ -1,0 +1,5 @@
+{{range .Tasks}}
+{{template "task-item.html" .}}
+{{else}}
+<div class="empty-state">No tasks found</div>
+{{end}}
