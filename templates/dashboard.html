@@ -1,0 +1,33 @@
+{{template "base.html" .}}
+
+{{define "title"}}Dashboard{{end}}
+
+{{define "content"}}
+<div class="dashboard">
+  <nav class="navbar">
+    <div class="navbar-brand">Task Dashboard</div>
+    <div class="navbar-menu">
+      <span>Welcome, {{.User.Name}}</span>
+      <a href="/tasks" class="btn btn-secondary">Tasks</a>
+      <a href="/logout" class="btn btn-secondary">Logout</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <h1>Dashboard</h1>
+
+    <div id="stats-container" hx-get="/api/stats" hx-trigger="load, every 30s">
+      {{template "stats.html" .Stats}}
+    </div>
+
+    <div class="recent-tasks">
+      <h2>Recent Tasks</h2>
+      <div id="task-list">
+        {{range .Tasks}}
+        {{template "task-item.html" .}}
+        {{end}}
+      </div>
+    </div>
+  </div>
+</div>
+{{end}}

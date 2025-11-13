@@ -1,0 +1,61 @@
+{{template "base.html" .}}
+
+{{define "title"}}Tasks{{end}}
+
+{{define "content"}}
+<div class="dashboard">
+  <nav class="navbar">
+    <div class="navbar-brand">Task Dashboard</div>
+    <div class="navbar-menu">
+      <a href="/dashboard" class="btn btn-secondary">Dashboard</a>
+      <a href="/logout" class="btn btn-secondary">Logout</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="tasks-header">
+      <h1>Tasks</h1>
+      <button class="btn btn-primary"
+              hx-get="/tasks/new"
+              hx-target="#modal-content"
+              onclick="document.getElementById('modal').style.display='block'">
+          New Task
+      </button>
+    </div>
+
+    <div class="filter-bar">
+      <button class="filter-btn {{if eq .Status ''}}active{{end}}"
+              hx-get="/api/tasks"
+              hx-target="#task-list">
+          All
+      </button>
+      <button class="filter-btn {{if eq .Status 'pending'}}active{{end}}"
+              hx-get="/api/tasks?status=pending"
+              hx-target="#task-list">
+          Pending
+      </button>
+      <button class="filter-btn {{if eq .Status 'in_progress'}}active{{end}}"
+              hx-get="/api/tasks?status=in_progress"
+              hx-target="#task-list">
+          In Progress
+      </button>
+      <button class="filter-btn {{if eq .Status 'completed'}}active{{end}}"
+              hx-get="/api/tasks?status=completed"
+              hx-target="#task-list">
+          Completed
+      </button>
+    </div>
+
+    <div id="task-list">
+      {{template "task-list.html" .}}
+    </div>
+  </div>
+</div>
+
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="document.getElementById('modal').style.display='none'">&times;</span>
+    <div id="modal-content"></div>
+  </div>
+</div>
+{{end}}             
