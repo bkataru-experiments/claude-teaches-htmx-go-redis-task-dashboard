@@ -1,1 +1,25 @@
 <div class="task-card priority-{{.Priority}}" id="task-{{.ID}}">
+  <div class="task-header">
+    <h3>{{.Title}}</h3>
+    <div class="task-actions">
+      <button class="btn-icon"
+              hx-get="/tasks/{{.ID}}/edit"
+              hx-target="#modal-content"
+              onclick="document.getElementById('modal').style.display='block'">
+          ✏️
+      </button>
+      <button class="btn-icon"
+              hx-delete="/api/tasks/{{.ID}}"
+              hx-target="#task-{{.ID}}"
+              hx-swap="outerHTML"
+              hx-confirm="Are you sure you want to delete this task?">
+          🗑️
+      </button>
+    </div>
+  </div>
+  <p class="task-description">{{.Description}}</p>
+  <div class="task-meta">
+    <span class="badge badge-{{.Status}}">{{.Status}}</span>
+    <span class="badge badge-priority-{{.Priority}}">{{.Priority}}</span>
+  </div>
+</div>

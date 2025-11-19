@@ -24,22 +24,22 @@
     </div>
 
     <div class="filter-bar">
-      <button class="filter-btn {{if eq .Status ''}}active{{end}}"
+      <button class="filter-btn {{if not .Status}}active{{end}}"
               hx-get="/api/tasks"
               hx-target="#task-list">
           All
       </button>
-      <button class="filter-btn {{if eq .Status 'pending'}}active{{end}}"
+      <button class="filter-btn {{if eq .Status "pending"}}active{{end}}"
               hx-get="/api/tasks?status=pending"
               hx-target="#task-list">
           Pending
       </button>
-      <button class="filter-btn {{if eq .Status 'in_progress'}}active{{end}}"
+      <button class="filter-btn {{if eq .Status "in_progress"}}active{{end}}"
               hx-get="/api/tasks?status=in_progress"
               hx-target="#task-list">
           In Progress
       </button>
-      <button class="filter-btn {{if eq .Status 'completed'}}active{{end}}"
+      <button class="filter-btn {{if eq .Status "completed"}}active{{end}}"
               hx-get="/api/tasks?status=completed"
               hx-target="#task-list">
           Completed

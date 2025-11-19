@@ -1,0 +1,42 @@
+<h2>{{if .ID}}Edit Task{{else}}New Task{{end}}</h2>
+<form {{if .ID}}
+      hx-put="/api/tasks/{{.ID}}"
+      {{else}}
+      hx-post="/api/tasks"
+      {{end}}
+      hx-target="#task-list"
+      hx-on::after-request="document.getElementById('modal').style.display='none'">
+    <div class="form-group">
+      <label for="title">Title</label>
+      <input type="text" id="title" name="title" value="{{.Title}}" required>
+    </div>
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea id="description" name="description" rows="4">{{.Description}}</textarea>
+    </div>
+    {{if .ID}}
+    <div class="form-group">
+      <label for="status">Status</label>
+      <select id="status" name="status">
+        <option value="pending" {{if eq .Status "pending"}}selected{{end}}>Pending</option>
+        <option value="in_progress" {{if eq .Status "in_progress"}}selected{{end}}>In Progress</option>
+        <option value="completed" {{if eq .Status "completed"}}selected{{end}}>Completed</option>
+      </select>
+    </div>
+    {{end}}
+    <div class="form-group">
+      <label for="priority">Priority</label>
+      <select id="priority" name="priority">
+        <option value="low" {{if eq .Priority "low"}}selected{{end}}>Low</option>
+        <option value="medium" {{if eq .Priority "medium"}}selected{{end}}>Medium</option>
+        <option value="high" {{if eq .Priority "high"}}selected{{end}}>High</option>
+      </select>
+    </div>
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">{{if .ID}}Update{{else}}Create{{end}}</button>
+      <button type="button" class="btn btn-secondary"
+              onclick="document.getElementById('modal').style.display='none'">
+          Cancel
+      </button>
+    </div>
+</form>
